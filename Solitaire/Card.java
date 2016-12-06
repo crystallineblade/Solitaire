@@ -70,7 +70,7 @@ public class Card implements Comparable<Card>
      *  @return whether or not this Card is equal to other.
      */
     public boolean equals(Card other) {
-        if (other.symbol == this.symbol && other.value == this.value) {
+        if (other.symbol == this.symbol) {
             return true;
         }
         else {

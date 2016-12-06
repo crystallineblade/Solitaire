@@ -5,6 +5,7 @@ public class Board
     // Attributes
     ArrayList<Deck> stacks;
     Deck drawPile;
+    ArrayList<Deck> completed;
     /**
      *  Sets up the Board and fills the stacks and draw pile from a Deck
      *  consisting of numDecks Decks.  The number of Cards in a Deck
@@ -25,6 +26,7 @@ public class Board
     public Board(int numStacks, int numDecks) {
         stacks = new ArrayList<Deck>();
         drawPile = new Deck();
+        completed = new ArrayList<Deck>();
         for (int i = 0; i < numStacks; i++) {
             stacks.add(new Deck());
         }
@@ -62,22 +64,42 @@ public class Board
      *  your implementation of Card if you need to.
      */
     public void makeMove(String symbol, int src, int dest) {
-        /* *** TO BE IMPLEMENTED IN ACTIVITY 5 *** */
+        
     }
 
     /** 
      *  Moves one card onto each stack, or as many as are available
      */
     public void drawCards() {
-        /* *** TO BE IMPLEMENTED IN ACTIVITY 5 *** */
+        if (drawPile.size() >= stacks.size()) {
+            for (int i = 0; i < stacks.size(); i++) {
+                Card c = drawPile.draw();
+                c.setFaceUp(true);
+                stacks.get(i).add(c);
+            }
+        }
+        else {
+            for (int i = 0; i < drawPile.size(); i++) {
+                Card c = drawPile.draw();
+                c.setFaceUp(true);
+                stacks.get(i).add(c);
+            }
+        }
     }
 
     /**
      *  Returns true if all stacks and the draw pile are all empty
      */ 
     public boolean isEmpty() {
-        /* *** TO BE IMPLEMENTED IN ACTIVITY 5 *** */
-        return false;
+        for (int i = 0; i < stacks.size(); i++) {
+            if (stacks.get(i).size() > 0) {
+                return false;
+            }
+        }
+        if (drawPile.size() > 0) {
+            return false;
+        }
+        return true;
     }
 
     /**
@@ -89,7 +111,30 @@ public class Board
      *  then an invalid move message is displayed and the Board is not changed.
      */
     public void clear(int sourceStack) {
-        /* *** TO BE IMPLEMENTED IN ACTIVITY 5 *** */
+        if (sourceStack < 0 || sourceStack >= stacks.size()) {
+            System.out.println("Error: source stack is out of bounds");
+            return;
+        }
+        if (stacks.get(sourceStack).size()>= 13) {
+            for (int i = stacks.get(sourceStack).size()-12; i < stacks.get(sourceStack).size(); i++) {
+                if (stacks.get(sourceStack).get(i).compareTo(stacks.get(sourceStack).get(i-1)) != -1) {
+                    System.out.println("Error: invalid move");
+                    return;
+                }
+            }
+            for (int i = stacks.get(sourceStack).size()-1; i >= 0; i--) {
+                if (stacks.get(sourceStack).get(i).equals(new Card("K",13))) {
+                    stacks.get(sourceStack).remove(i);
+                    break;
+                }
+                else {
+                    stacks.get(sourceStack).remove(i);
+                }
+            }
+        }
+        else {
+            System.out.println("Error: invalid move");
+        }
     }
 
     /**
@@ -104,5 +149,6 @@ public class Board
         System.out.println();
         System.out.println("Draw Pile:");
         System.out.println(drawPile.toString());
+        System.out.println(isEmpty());
     }
 }
