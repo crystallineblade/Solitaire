@@ -70,13 +70,9 @@ public class Card implements Comparable<Card>
      *  @return whether or not this Card is equal to other.
      */
     public boolean equals(Card other) {
-        if (other.symbol == this.symbol) {
-            return true;
-        }
-        else {
-            return false;
-        }
+        return this.symbol.equals(other.symbol);
     }
+    
     /**
      * Returns the difference in value between this <code>Card</code> and another.
      * 
@@ -85,6 +81,7 @@ public class Card implements Comparable<Card>
     public int compareTo(Card other) {
         return this.value - other.value;
     }
+    
     /**
      * Returns this card as a String.  If the card is face down, "X"
      * is returned.  Otherwise the symbol of the card is returned.

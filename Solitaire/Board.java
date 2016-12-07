@@ -6,6 +6,8 @@ public class Board
     ArrayList<Deck> stacks;
     Deck drawPile;
     ArrayList<Deck> completed;
+    String[] symbols = {"A", "2", "3", "4", "5", "6", "7", "8", "9", "T", "J", "Q", "K"};
+    int[] values = {1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13};
     /**
      *  Sets up the Board and fills the stacks and draw pile from a Deck
      *  consisting of numDecks Decks.  The number of Cards in a Deck
@@ -30,8 +32,6 @@ public class Board
         for (int i = 0; i < numStacks; i++) {
             stacks.add(new Deck());
         }
-        String[] symbols = {"A", "2", "3", "4", "5", "6", "7", "8", "9", "T", "J", "Q", "K"};
-        int[] values = {1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13};
         Deck deck = new Deck();
         for (int i = 0; i < numDecks; i++) {
             for (int j = 0; j < 13; j++) {
@@ -56,6 +56,7 @@ public class Board
         for (int i = 0; i < numStacks; i++) {
             stacks.get(i).get(stacks.get(i).size()-1).setFaceUp(true);
         }
+
     }
 
     /**
@@ -64,13 +65,63 @@ public class Board
      *  your implementation of Card if you need to.
      */
     public void makeMove(String symbol, int src, int dest) {
-        
+        int x = -1;
+        Card c = new Card(symbol, 0);
+        for (int i = stacks.get(src).size()-1; i >= 0; i--) {
+            if (stacks.get(src).get(i).equals(c)){
+                x = i;
+                break;
+            }
+        }
+        if (x == -1) {
+            System.out.println("Error: Card not found");
+            return;
+        }
+        if (!stacks.get(src).get(x).isFaceUp()) {
+            System.out.println("Error: Card not found");
+            return;
+        }
+        if (x == 0) {
+            ;
+        }
+        else {
+            for (int i = x+1; i < stacks.get(src).size(); i++) {
+                if (stacks.get(src).get(i-1).compareTo(stacks.get(src).get(i)) != 1) {
+                    System.out.println("Error: Illegal move");
+                    return;
+                }
+            }
+        }
+        if (stacks.get(dest).size() == 0) {
+            while (x <= stacks.get(src).size()-1) {
+                stacks.get(dest).add(stacks.get(src).get(x));
+                stacks.get(src).remove(x);
+            }
+        }
+        else if (x !=0 && stacks.get(dest).get(stacks.get(dest).size()-1).compareTo(stacks.get(src).get(x)) != 1){
+            System.out.println("Error: Illegal move");
+        }
+        else {
+            while (x <= stacks.get(src).size()-1) {
+                stacks.get(dest).add(stacks.get(src).get(x));
+                stacks.get(src).remove(x);
+            }
+        }
+        if (stacks.get(src).size() != 0 && !stacks.get(src).get(stacks.get(src).size()-1).isFaceUp()) {
+            stacks.get(src).get(stacks.get(src).size()-1).setFaceUp(true);
+        }
     }
 
     /** 
      *  Moves one card onto each stack, or as many as are available
      */
     public void drawCards() {
+        for (int i = 0; i < stacks.size(); i++) {
+            if (stacks.get(i).size() == 0) {
+                System.out.println("Error: Empty stack");
+                return;
+            }
+        }
         if (drawPile.size() >= stacks.size()) {
             for (int i = 0; i < stacks.size(); i++) {
                 Card c = drawPile.draw();
@@ -79,10 +130,12 @@ public class Board
             }
         }
         else {
-            for (int i = 0; i < drawPile.size(); i++) {
+            int i = 0;
+            while (drawPile.size()>0) {
                 Card c = drawPile.draw();
                 c.setFaceUp(true);
                 stacks.get(i).add(c);
+                i++;
             }
         }
     }
@@ -149,6 +202,5 @@ public class Board
         System.out.println();
         System.out.println("Draw Pile:");
         System.out.println(drawPile.toString());
-        System.out.println(isEmpty());
     }
 }

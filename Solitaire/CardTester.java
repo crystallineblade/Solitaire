@@ -9,7 +9,7 @@ public class CardTester
         System.out.println("Card 1 face up:" + card1.isFaceUp());
         card2.setFaceUp(true);
         System.out.println("Card 2 face up:" + card2.isFaceUp());
-        System.out.println("Card 2 = Card 1: " + card2.equals(card1));
+        System.out.println("Card 2 = Card 1: " + card2.equalsCard(card1));
         System.out.println("Card 3 compared to Card 2:" + card3.compareTo(card2));
         System.out.println(card1.toString() +" "+ card2.toString() +" " + card3.toString());
     }
