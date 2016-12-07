@@ -1,4 +1,4 @@
-import java.util.Scanner;
+import java.util.*;
 
 public class SpiderSolitaire
 {
@@ -45,17 +45,26 @@ public class SpiderSolitaire
             if (command.equals("move")) {
                 /* *** TO BE MODIFIED IN ACTIVITY 5 *** */
                 String symbol = input.next();
-                int sourceStack = input.nextInt();
-                int destinationStack = input.nextInt();
-                board.makeMove(symbol, sourceStack - 1, destinationStack - 1);
+                try {
+                    int sourceStack = input.nextInt();
+                    int destinationStack = input.nextInt();
+                    board.makeMove(symbol, sourceStack - 1, destinationStack - 1);
+                }
+                catch (InputMismatchException i){
+                    System.out.println("Error: invalid information entered");
+                }
             }
             else if (command.equals("draw")) {
                 board.drawCards();
             }
             else if (command.equals("clear")) {
-                /* *** TO BE MODIFIED IN ACTIVITY 5 *** */
-                int sourceStack = input.nextInt();
-                board.clear(sourceStack - 1);
+                try {
+                    int sourceStack = input.nextInt();
+                    board.clear(sourceStack - 1);
+                }
+                catch (InputMismatchException i) {
+                    System.out.println("Error: invalid information entered");
+                }   
             }
             else if (command.equals("restart")) {
                 board = new Board(NUM_STACKS, NUM_DECKS);
